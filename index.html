@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa de Satisfação | Alfa Precatórios</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --silver-bright: #ffffff;
+      --silver-main: #c8c8ca;
+      --silver-dark: #83838a;
+      --gold: #c9a24b;
+      --gold-dim: #8a7133;
+      --bg-dark: #0a0a0b;
+      --glass-bg: rgba(24, 24, 27, 0.82);
+      --border-glass: rgba(201, 162, 75, 0.22);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(circle at 50% 0%, #1c1c20 0%, #0a0a0b 60%),
+        linear-gradient(rgba(200, 200, 202, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200, 200, 202, 0.025) 1px, transparent 1px);
+      background-size: 100% 100%, 34px 34px, 34px 34px;
+      color: #d8d8da;
+      font-family: 'Jost', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 36px 20px 20px;
+      text-align: center;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), transparent);
+    }
+
+    header img {
+      max-width: 150px;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.18));
+    }
+
+    header .marca {
+      margin-top: 14px;
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 16px auto;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65), inset 0 0 15px rgba(201, 162, 75, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), var(--gold), var(--gold-dim), transparent);
+    }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: var(--silver-bright);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    p {
+      font-size: 16.5px;
+      font-weight: 300;
+      margin-bottom: 25px;
+      color: #a6a6ab;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* NOTAS COLORIDAS NPS */
+    .notas {
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .nota {
+      flex: 1;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: 'Jost', sans-serif;
+      color: #000;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      border: 2px solid transparent;
+    }
+
+    .nota[data-value="1"],
+    .nota[data-value="2"] {
+      background: #ff4d4d;
+    }
+
+    .nota[data-value="3"],
+    .nota[data-value="4"] {
+      background: #ff6a00;
+    }
+
+    .nota[data-value="5"],
+    .nota[data-value="6"] {
+      background: #ffcc00;
+    }
+
+    .nota[data-value="7"],
+    .nota[data-value="8"] {
+      background: #c6ff00;
+    }
+
+    .nota[data-value="9"],
+    .nota[data-value="10"] {
+      background: #4CAF50;
+    }
+
+    .nota:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.15);
+    }
+
+    .nota.selected {
+      border-color: #fff;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+      transform: scale(1.05);
+    }
+
+    .legendas {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--silver-dark);
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    textarea {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(201, 162, 75, 0.18);
+      border-radius: 4px;
+      color: #fff;
+      font-family: 'Jost', sans-serif;
+      font-size: 16px;
+    }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--gold-dim);
+    }
+
+    textarea {
+      resize: none;
+      min-height: 80px;
+    }
+
+    /* ATENDENTE FIXO — sem seleção, apenas informativo */
+    .atendente-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--silver-dark);
+      letter-spacing: 0.5px;
+      padding: 10px 0 2px;
+      border-top: 1px solid rgba(201, 162, 75, 0.12);
+    }
+
+    .atendente-info b {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    button {
+      background: linear-gradient(180deg, #f0e2bf 0%, #c9a24b 45%, #8a7133 55%, #d8bd7c 100%);
+      color: #1a1305;
+      padding: 15px;
+      border: 1px solid rgba(255, 236, 190, 0.6);
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 10px;
+      transition: filter 0.25s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 0 20px rgba(201, 162, 75, 0.35);
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 30px;
+      text-align: center;
+      font-size: 12.5px;
+      color: #63636a;
+      border-top: 1px solid rgba(201, 162, 75, 0.08);
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: 95%;
+        padding: 25px 15px;
+      }
+
+      .nota {
+        height: 35px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <img src="./assets/alfalogo.jpg" alt="Logo Alfa Precatórios">
+    <div class="marca">Alfa Precatórios</div>
+  </header>
+
+  <div class="container">
+    <h2>Pesquisa de Satisfação</h2>
+    <p>O quanto você indicaria a Alfa Precatórios a um amigo ou familiar?</p>
+
+    <div class="notas" id="notas">
+      <div class="nota" data-value="1">01</div>
+      <div class="nota" data-value="2">02</div>
+      <div class="nota" data-value="3">03</div>
+      <div class="nota" data-value="4">04</div>
+      <div class="nota" data-value="5">05</div>
+      <div class="nota" data-value="6">06</div>
+      <div class="nota" data-value="7">07</div>
+      <div class="nota" data-value="8">08</div>
+      <div class="nota" data-value="9">09</div>
+      <div class="nota" data-value="10">10</div>
+    </div>
+
+    <div class="legendas">
+      <span>Crítico</span>
+      <span>Neutro</span>
+      <span>Promotor</span>
+    </div>
+
+    <form id="form">
+      <input type="hidden" id="notaEscolhida" name="nota">
+      <input type="hidden" id="funcionario" name="funcionario" value="Brenda">
+
+      <input type="text" id="nome" name="nome" placeholder="NOME DO CLIENTE" required>
+      <input type="tel" id="telefone" name="telefone" placeholder="TELEFONE DE CONTATO" required>
+
+      <textarea id="comentarios" name="comentarios" placeholder="COMENTÁRIOS ADICIONAIS (OPCIONAL)"></textarea>
+
+      <div class="atendente-info">Atendimento realizado por <b>Brenda</b></div>
+
+      <button type="submit" id="btnEnviar">Enviar Avaliação</button>
+    </form>
+
+    <div id="agradecimento" style="display:none; text-align:center; padding: 40px 0;">
+      <h2 style="color: var(--silver-bright);">Avaliação Enviada!</h2>
+      <p>Agradecemos por dedicar um momento para avaliar nosso atendimento.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>ALFA PRECATÓRIOS • ANÁLISE E ANTECIPAÇÃO DE PRECATÓRIOS<br>© 2025 ALFA PRECATÓRIOS</p>
+  </footer>
+
+  <script>
+    const notas = document.querySelectorAll('.nota');
+    const notaInput = document.getElementById('notaEscolhida');
+
+    notas.forEach(nota => {
+      nota.addEventListener('click', () => {
+        notas.forEach(n => n.classList.remove('selected'));
+        nota.classList.add('selected');
+        notaInput.value = nota.dataset.value;
+      });
+    });
+
+    document.getElementById('nome').addEventListener('input', function () {
+      this.value = this.value.toUpperCase().replace(/[0-9]/g, '');
+    });
+
+    document.getElementById('telefone').addEventListener('input', function () {
+      this.value = this.value.replace(/[^0-9()-\s]/g, '');
+    });
+
+    const form = document.getElementById('form');
+    const btnEnviar = document.getElementById('btnEnviar');
+    let enviando = false;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (enviando) return;
+
+      const nota = notaInput.value;
+      if (!nota) {
+        alert("Selecione uma nota de 1 a 10.");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      enviando = true;
+      btnEnviar.disabled = true;
+      btnEnviar.innerText = "ENVIANDO...";
+
+      const formData = new FormData();
+      formData.append("nota", nota);
+      formData.append("nome", document.getElementById('nome').value);
+      formData.append("telefone", document.getElementById('telefone').value);
+      formData.append("comentarios", document.getElementById('comentarios').value);
+      formData.append("funcionario", document.getElementById('funcionario').value);
+
+      // ATENÇÃO: troque a URL abaixo pelo webhook do Google Apps Script
+      // vinculado à planilha da Alfa Precatórios (não reaproveite o da Vegas,
+      // senão os dados vão parar na planilha errada).
+      fetch("COLOQUE_AQUI_A_URL_DO_APPS_SCRIPT_DA_ALFA", {
+        method: "POST",
+        body: formData
+      })
+        .then(() => {
+          document.getElementById('form').style.display = 'none';
+          document.getElementById('notas').style.display = 'none';
+          document.querySelector('.legendas').style.display = 'none';
+          document.getElementById('agradecimento').style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        })
+        .catch(() => {
+          enviando = false;
+          btnEnviar.disabled = false;
+          btnEnviar.innerText = "REENVIAR";
+          alert("FALHA NO ENVIO. TENTE NOVAMENTE.");
+        });
+    });
+  </script>
+</body>
+
+</html>
