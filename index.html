@@ -205,55 +205,6 @@
       min-height: 80px;
     }
 
-    /* SELEÇÃO DE ATENDENTE (tap to select) */
-    .atendente-container {
-      text-align: left;
-    }
-
-    .atendente-label {
-      display: block;
-      margin-bottom: 12px;
-      font-weight: 500;
-      color: var(--silver-main);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      text-align: center;
-    }
-
-    .atendente-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .atendente-chip {
-      padding: 12px 26px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(201, 162, 75, 0.22);
-      border-radius: 100px;
-      cursor: pointer;
-      color: #a6a6ab;
-      font-size: 15px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      transition: all 0.25s ease;
-    }
-
-    .atendente-chip:hover {
-      background: rgba(201, 162, 75, 0.08);
-      border-color: rgba(201, 162, 75, 0.45);
-      color: var(--silver-bright);
-    }
-
-    .atendente-chip.selected {
-      background: rgba(201, 162, 75, 0.16);
-      border-color: var(--gold);
-      color: var(--silver-bright);
-      box-shadow: 0 0 15px rgba(201, 162, 75, 0.3);
-    }
-
     button {
       background: linear-gradient(180deg, #f0e2bf 0%, #c9a24b 45%, #8a7133 55%, #d8bd7c 100%);
       color: #1a1305;
@@ -411,12 +362,6 @@
 
       <textarea id="comentarios" name="comentarios" placeholder="COMENTÁRIOS ADICIONAIS (OPCIONAL)"></textarea>
 
-      <div class="atendente-container">
-        <label class="atendente-label">Atendente</label>
-        <div class="atendente-list" id="atendentes">
-          <div class="atendente-chip" data-value="Brenda">Brenda</div>
-        </div>
-      </div>
 
       <button type="submit" id="btnEnviar">Enviar Avaliação</button>
     </form>
