@@ -25,7 +25,7 @@
       padding: 0;
       box-sizing: border-box;
     }
-
+S
     body {
       background-color: var(--bg-dark);
       background-image:
@@ -205,22 +205,53 @@
       min-height: 80px;
     }
 
-    /* ATENDENTE FIXO — sem seleção, apenas informativo */
-    .atendente-info {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--silver-dark);
-      letter-spacing: 0.5px;
-      padding: 10px 0 2px;
-      border-top: 1px solid rgba(201, 162, 75, 0.12);
+    /* SELEÇÃO DE ATENDENTE (tap to select) */
+    .atendente-container {
+      text-align: left;
     }
 
-    .atendente-info b {
-      color: var(--gold);
+    .atendente-label {
+      display: block;
+      margin-bottom: 12px;
       font-weight: 500;
+      color: var(--silver-main);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      text-align: center;
+    }
+
+    .atendente-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .atendente-chip {
+      padding: 12px 26px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(201, 162, 75, 0.22);
+      border-radius: 100px;
+      cursor: pointer;
+      color: #a6a6ab;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all 0.25s ease;
+    }
+
+    .atendente-chip:hover {
+      background: rgba(201, 162, 75, 0.08);
+      border-color: rgba(201, 162, 75, 0.45);
+      color: var(--silver-bright);
+    }
+
+    .atendente-chip.selected {
+      background: rgba(201, 162, 75, 0.16);
+      border-color: var(--gold);
+      color: var(--silver-bright);
+      box-shadow: 0 0 15px rgba(201, 162, 75, 0.3);
     }
 
     button {
@@ -300,14 +331,19 @@
 
     <form id="form">
       <input type="hidden" id="notaEscolhida" name="nota">
-      <input type="hidden" id="funcionario" name="funcionario" value="Brenda">
+      <input type="hidden" id="funcionario" name="funcionario">
 
       <input type="text" id="nome" name="nome" placeholder="NOME DO CLIENTE" required>
       <input type="tel" id="telefone" name="telefone" placeholder="TELEFONE DE CONTATO" required>
 
       <textarea id="comentarios" name="comentarios" placeholder="COMENTÁRIOS ADICIONAIS (OPCIONAL)"></textarea>
 
-      <div class="atendente-info">Atendimento realizado por <b>Brenda</b></div>
+      <div class="atendente-container">
+        <label class="atendente-label">Atendente</label>
+        <div class="atendente-list" id="atendentes">
+          <div class="atendente-chip" data-value="Brenda">Brenda</div>
+        </div>
+      </div>
 
       <button type="submit" id="btnEnviar">Enviar Avaliação</button>
     </form>
@@ -334,6 +370,17 @@
       });
     });
 
+    const atendentes = document.querySelectorAll('.atendente-chip');
+    const funcionarioInput = document.getElementById('funcionario');
+
+    atendentes.forEach(chip => {
+      chip.addEventListener('click', () => {
+        atendentes.forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        funcionarioInput.value = chip.dataset.value;
+      });
+    });
+
     document.getElementById('nome').addEventListener('input', function () {
       this.value = this.value.toUpperCase().replace(/[0-9]/g, '');
     });
@@ -354,6 +401,11 @@
       if (!nota) {
         alert("Selecione uma nota de 1 a 10.");
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      if (!funcionarioInput.value) {
+        alert("Selecione o atendente.");
         return;
       }
 
