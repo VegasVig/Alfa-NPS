@@ -428,10 +428,7 @@
         return;
       }
 
-      if (!funcionarioInput.value) {
-        alert("Selecione o atendente.");
-        return;
-      }
+   
 
       enviando = true;
       btnEnviar.disabled = true;
@@ -447,7 +444,7 @@
       // ATENÇÃO: troque a URL abaixo pelo webhook do Google Apps Script
       // vinculado à planilha da Alfa Precatórios (não reaproveite o da Vegas,
       // senão os dados vão parar na planilha errada).
-      fetch("COLOQUE_AQUI_A_URL_DO_APPS_SCRIPT_DA_ALFA", {
+      fetch("https://script.google.com/macros/s/AKfycbzrzGdUlSiiSjYkwpXevqugeCFPCo8GiSwmd7xpbw1Rc7SKvMemiwbk6E4-ijbvbYJB/exec", {
         method: "POST",
         body: formData
       })
