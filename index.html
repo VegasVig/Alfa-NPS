@@ -275,6 +275,79 @@
       box-shadow: 0 0 20px rgba(201, 162, 75, 0.35);
     }
 
+    .container.sucesso {
+      background: linear-gradient(160deg, rgba(20, 40, 28, 0.92), rgba(10, 20, 14, 0.95));
+      border-color: rgba(76, 175, 80, 0.35);
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.65), 0 0 60px rgba(76, 175, 80, 0.12), inset 0 0 20px rgba(76, 175, 80, 0.06);
+      transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
+    }
+
+    .container.sucesso::before {
+      background: linear-gradient(90deg, transparent, #2e7d32, #4CAF50, #2e7d32, transparent);
+    }
+
+    #agradecimento {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 30px 10px 10px;
+    }
+
+    .check-circle {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #6fdc74, #4CAF50 55%, #2e7d32 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      box-shadow: 0 0 0 6px rgba(76, 175, 80, 0.12), 0 0 30px rgba(76, 175, 80, 0.45);
+      animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .check-circle svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .check-circle svg path {
+      stroke-dasharray: 40;
+      stroke-dashoffset: 40;
+      animation: draw-check 0.45s ease-out 0.25s forwards;
+    }
+
+    @keyframes pop-in {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes draw-check {
+      to { stroke-dashoffset: 0; }
+    }
+
+    #agradecimento h2 {
+      color: #eafcec;
+      margin-bottom: 12px;
+    }
+
+    #agradecimento p {
+      color: #b9d9bc;
+      margin-bottom: 0;
+      font-size: 15.5px;
+    }
+
+    #agradecimento .selo {
+      margin-top: 26px;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: #6fdc74;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
     footer {
       margin-top: auto;
       padding: 30px;
@@ -306,9 +379,9 @@
     <div class="marca">Alfa Precatórios</div>
   </header>
 
-  <div class="container">
-    <h2>Pesquisa de Satisfação</h2>
-    <p>O quanto você indicaria a Alfa Precatórios a um amigo ou familiar?</p>
+  <div class="container" id="containerPrincipal">
+    <h2 id="tituloInicial">Pesquisa de Satisfação</h2>
+    <p id="perguntaInicial">O quanto você indicaria a Alfa Precatórios a um amigo ou familiar?</p>
 
     <div class="notas" id="notas">
       <div class="nota" data-value="1">01</div>
@@ -348,9 +421,15 @@
       <button type="submit" id="btnEnviar">Enviar Avaliação</button>
     </form>
 
-    <div id="agradecimento" style="display:none; text-align:center; padding: 40px 0;">
-      <h2 style="color: var(--silver-bright);">Avaliação Enviada!</h2>
+    <div id="agradecimento">
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 12.5L9.5 18L20 6" stroke="#0a0a0b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <h2>Avaliação Enviada!</h2>
       <p>Agradecemos por dedicar um momento para avaliar nosso atendimento.</p>
+      <div class="selo">Alfa Precatórios</div>
     </div>
   </div>
 
@@ -428,10 +507,13 @@
         body: formData
       })
         .then(() => {
+          document.getElementById('tituloInicial').style.display = 'none';
+          document.getElementById('perguntaInicial').style.display = 'none';
           document.getElementById('form').style.display = 'none';
           document.getElementById('notas').style.display = 'none';
           document.querySelector('.legendas').style.display = 'none';
-          document.getElementById('agradecimento').style.display = 'block';
+          document.getElementById('containerPrincipal').classList.add('sucesso');
+          document.getElementById('agradecimento').style.display = 'flex';
           window.scrollTo({ top: 0, behavior: 'smooth' });
         })
         .catch(() => {
